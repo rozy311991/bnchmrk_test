@@ -78,7 +78,9 @@ class StudentController extends Controller
 
      public function getSecondHighestPocketMoneyOfStudent(){
          try {
-             return Student::select('id','first_name','last_name','pocket_money')->orderBy('pocket_money','desc')->offset(1)->limit(1)->first();            
+             $fecthTheDistinctPocketMoney = Student::select(DB::raw('DISTINCT(`pocket_money`)'))->orderBy('pocket_money','desc')->offset(1)->limit(1)->first();
+             return Student::select('id','first_name','last_name','pocket_money')->where('pocket_money',$fecthTheDistinctPocketMoney['pocket_money'])->get();            
+             //  return Student::select(DB::raw('DISTINCT(`pocket_money`)'))->orderBy('pocket_money','desc')->offset(1)->limit(1)->first();            
          } catch (\Exception $th) {
              throw $th;
          }
